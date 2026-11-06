@@ -1,6 +1,16 @@
 {
-  "latestVersion": "2026-10-01T08:00",
+  "latestVersion": "2026-11-06T18:00",
   "releases": [
+    {
+      "date": "2026-11-06",
+      "time": "18:00",
+      "kind": "公告",
+      "title": "改为出海方向的热点站",
+      "body": [
+        "站名改为「出海热点」：盯住海外流量获客（SEO/GEO、关键词、外链）、AI 产品与模型供给、变现与平台政策、海外市场风向，每天 08:00 出一份日报。",
+        "信源换为出海方向的一批公开源：Google Search Central、Stripe、Cloudflare、Vercel、Product Hunt、Hacker News、Ahrefs、Semrush 等；分类、主题与提示词同步调整。"
+      ]
+    },
     {
       "date": "2026-10-01",
       "time": "08:00",
