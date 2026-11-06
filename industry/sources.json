@@ -293,6 +293,153 @@
       "syndicate_fulltext": false
     },
     {
+      "id": "rss-betalist",
+      "name": "BetaList",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://feeds.feedburner.com/BetaList",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "榜单",
+        "新品"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-pitchwall",
+      "name": "PitchWall",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://pitchwall.co/rss",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "榜单",
+        "新品"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-foundrlist",
+      "name": "FoundrList",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.foundrlist.com/feeds/products.xml",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "榜单",
+        "新品"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-shipstry",
+      "name": "Shipstry",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://shipstry.com/rss.xml",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "榜单",
+        "新品"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-openalternative",
+      "name": "OpenAlternative",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://openalternative.co/rss/tools.xml",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "目录",
+        "开源"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-rundown",
+      "name": "The Rundown AI",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.rundown.ai/feed",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "媒体",
+        "AI"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-v2ex",
+      "name": "V2EX",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.v2ex.com/index.xml",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "社区",
+        "中文"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
       "id": "rss-simon-willison",
       "name": "Simon Willison",
       "kind": "rss",
