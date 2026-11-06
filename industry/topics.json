@@ -168,6 +168,27 @@
       "definition": "用 X、Threads、Reddit、TikTok 等社媒渠道获客的方法、算法变化与案例。"
     },
     {
+      "slug": "voice-ai",
+      "name": "语音转写与听写",
+      "group": "field",
+      "tags": ["语音转写"],
+      "definition": "语音转写、听写与录音工具赛道：TurboScribe、Otter.ai、AssemblyAI、Deepgram、Wispr Flow 等竞品与模型供给。"
+    },
+    {
+      "slug": "image-gen",
+      "name": "图像生成",
+      "group": "field",
+      "tags": ["图像生成"],
+      "definition": "图像生成赛道：FLUX、Ideogram、Recraft 与各家模型的更新、价格与用例。"
+    },
+    {
+      "slug": "api-pricing",
+      "name": "AI API 与定价",
+      "group": "field",
+      "tags": ["API/定价"],
+      "definition": "各家模型的 API 定价、基准对比与聚合平台（Artificial Analysis、OpenRouter）动态。"
+    },
+    {
       "slug": "revenue-cases",
       "name": "收入案例",
       "group": "genre",

@@ -47,12 +47,13 @@ export const CATEGORY_TAGS = [
 /** 可选的主题标签。 */
 export const TOPIC_TAGS = [
   "Agent", "编码", "推理", "多模态", "语音", "视频", "图像生成", "RAG", "端侧", "数据/训练", "搜索", "部署/工程", "开源生态", "具身智能", "MCP/工具调用",
-  "SEO", "GEO", "关键词", "外链", "独立开发", "出海工具", "订阅/支付", "广告/联盟", "社媒获客", "App 出海", "数据/报告",
+  "SEO", "GEO", "关键词", "外链", "独立开发", "出海工具", "订阅/支付", "广告/联盟", "社媒获客", "App 出海", "数据/报告", "语音转写", "API/定价",
 ] as const;
 
 /** 可选的实体标签（公司、机构、平台）。 */
 export const ENTITY_TAGS = ["OpenAI", "Anthropic", "DeepSeek", "DeepMind", "Google", "Meta", "Microsoft", "xAI", "Hugging Face", "GitHub", "arXiv",
-  "Stripe", "Product Hunt", "Cloudflare", "Vercel", "Y Combinator", "Shopify", "Ahrefs", "Semrush", "Amazon", "Apple"] as const;
+  "Stripe", "Product Hunt", "Cloudflare", "Vercel", "Y Combinator", "Shopify", "Ahrefs", "Semrush", "Amazon", "Apple",
+  "TurboScribe", "Otter.ai", "AssemblyAI", "Deepgram", "Wispr Flow", "FLUX", "Ideogram", "Recraft", "Artificial Analysis", "Perplexity", "Exa", "Tavily"] as const;
 
 /** 模型常写的近义词，统一成词表里的写法。 */
 export const TAG_SYNONYMS: Readonly<Record<string, string>> = {
@@ -109,6 +110,18 @@ export const ENTITIES: Record<string, { name: string; displayTag: string | null;
   github: { name: "GitHub", displayTag: "GitHub", aliases: ["GitHub"], orgNames: ["GitHub", "GitHub Next"] },
   apple: { name: "Apple", displayTag: null, aliases: ["Apple", "App Store", "苹果"], orgNames: ["Apple"] },
   amazon: { name: "Amazon / AWS", displayTag: null, aliases: ["Amazon", "AWS", "亚马逊"], orgNames: ["Amazon", "Amazon Web Services", "AWS"] },
+  turboscribe: { name: "TurboScribe", displayTag: null, aliases: ["TurboScribe"], orgNames: ["TurboScribe"] },
+  otter: { name: "Otter.ai", displayTag: null, aliases: ["Otter.ai", "Otter"], orgNames: ["Otter.ai"] },
+  assemblyai: { name: "AssemblyAI", displayTag: null, aliases: ["AssemblyAI"], orgNames: ["AssemblyAI"] },
+  deepgram: { name: "Deepgram", displayTag: null, aliases: ["Deepgram"], orgNames: ["Deepgram"] },
+  wispr: { name: "Wispr Flow", displayTag: null, aliases: ["Wispr Flow", "Wispr"], orgNames: ["Wispr"] },
+  "black-forest-labs": { name: "Black Forest Labs", displayTag: null, aliases: ["Black Forest Labs", "FLUX", "BFL"], orgNames: ["Black Forest Labs"] },
+  ideogram: { name: "Ideogram", displayTag: null, aliases: ["Ideogram"], orgNames: ["Ideogram"] },
+  recraft: { name: "Recraft", displayTag: null, aliases: ["Recraft"], orgNames: ["Recraft"] },
+  "artificial-analysis": { name: "Artificial Analysis", displayTag: null, aliases: ["Artificial Analysis"], orgNames: ["Artificial Analysis"] },
+  perplexity: { name: "Perplexity", displayTag: "Perplexity", aliases: ["Perplexity"], orgNames: ["Perplexity"] },
+  exa: { name: "Exa", displayTag: null, aliases: ["Exa"], orgNames: ["Exa"] },
+  tavily: { name: "Tavily", displayTag: null, aliases: ["Tavily"], orgNames: ["Tavily"] },
 };
 
 /**
@@ -157,6 +170,18 @@ export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; pattern
   { id: "ahrefs", name: "Ahrefs", patterns: [/ahrefs/i] },
   { id: "semrush", name: "Semrush", patterns: [/semrush/i] },
   { id: "github", name: "GitHub", patterns: [/github|copilot/i] },
+  { id: "turboscribe", name: "TurboScribe", patterns: [/turboscribe/i] },
+  { id: "otter", name: "Otter.ai", patterns: [/\botter(\.ai)?\b/i] },
+  { id: "assemblyai", name: "AssemblyAI", patterns: [/assemblyai/i] },
+  { id: "deepgram", name: "Deepgram", patterns: [/deepgram/i] },
+  { id: "wispr", name: "Wispr Flow", patterns: [/wispr/i] },
+  { id: "black-forest-labs", name: "Black Forest Labs / FLUX", patterns: [/black\s?forest\s?labs|\bflux(\.1)?\b/i] },
+  { id: "ideogram", name: "Ideogram", patterns: [/ideogram/i] },
+  { id: "recraft", name: "Recraft", patterns: [/recraft/i] },
+  { id: "artificial-analysis", name: "Artificial Analysis", patterns: [/artificial\s?analysis/i] },
+  { id: "perplexity", name: "Perplexity", patterns: [/perplexity/i] },
+  { id: "exa", name: "Exa", patterns: [/\bexa(\.ai)?\b/i] },
+  { id: "tavily", name: "Tavily", patterns: [/tavily/i] },
 ];
 
 /** 这些域名上的文章，发布方就是对应的公司（托管平台如 GitHub、arXiv 不算）。 */
@@ -180,6 +205,17 @@ export const PUBLISHER_DOMAINS: ReadonlyArray<{ entityId: string; domains: reado
   { entityId: "apple", domains: ["apple.com", "developer.apple.com"] },
   { entityId: "semrush", domains: ["semrush.com"] },
   { entityId: "ahrefs", domains: ["ahrefs.com"] },
+  { entityId: "turboscribe", domains: ["turboscribe.ai"] },
+  { entityId: "otter", domains: ["otter.ai"] },
+  { entityId: "assemblyai", domains: ["assemblyai.com"] },
+  { entityId: "deepgram", domains: ["deepgram.com"] },
+  { entityId: "wispr", domains: ["wisprflow.ai"] },
+  { entityId: "black-forest-labs", domains: ["bfl.ai", "blackforestlabs.ai"] },
+  { entityId: "ideogram", domains: ["ideogram.ai"] },
+  { entityId: "recraft", domains: ["recraft.ai"] },
+  { entityId: "artificial-analysis", domains: ["artificialanalysis.ai"] },
+  { entityId: "exa", domains: ["exa.ai"] },
+  { entityId: "tavily", domains: ["tavily.com"] },
 ];
 
 /** 原文里的这些写法也算提到了对应公司。 */
