@@ -37,15 +37,17 @@ async function stats(): Promise<WeeklyStats> {
 
   const bySource = await sql<{ source: string; selected: number; arts: number }[]>`
     WITH latest AS (
-      SELECT DISTINCT ON (article_id) article_id, tags, score, selected, created_at
+      SELECT DISTINCT ON (article_id) id AS analysis_id, article_id, tags, score, selected, created_at
       FROM analyses ORDER BY article_id, id DESC
     )
-    SELECT s.id AS source, count(l.id) FILTER (WHERE l.selected) AS selected, count(a.id) AS arts
+    SELECT s.id AS source, count(l.analysis_id) FILTER (WHERE l.selected) AS selected, count(a.id) AS arts
     FROM sources s
     LEFT JOIN articles a ON a.source_id = s.id AND a.created_at > ${window}
     LEFT JOIN latest l ON l.article_id = a.id
-    WHERE s.enabled AND (count(a.id) > 0 OR s.id = 'external-radar')
-    GROUP BY s.id ORDER BY selected DESC, arts DESC LIMIT 15`;
+    WHERE s.enabled
+    GROUP BY s.id
+    HAVING count(a.id) > 0 OR s.id = 'external-radar'
+    ORDER BY selected DESC, arts DESC LIMIT 15`;
 
   const [radar] = await sql<{ pushed: number; selected: number }[]>`
     WITH latest AS (
