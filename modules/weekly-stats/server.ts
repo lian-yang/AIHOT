@@ -4,10 +4,9 @@ import { sql } from "@aihot/backend/db";
 import { defineServerModule, type ServerModule } from "@aihot/backend/modules";
 import type { WeeklyStats } from "./stats.ts";
 
-const WINDOW = "7 days";
+const window = sql`now() - interval '7 days'`;
 
 async function stats(): Promise<WeeklyStats> {
-  const window = sql`now() - interval '${sql(WINDOW)}'`;
   const [totals] = await sql<{ articles: number; analyzed: number; selected: number }[]>`
     WITH latest AS (
       SELECT DISTINCT ON (article_id) article_id, tags, score, selected, created_at
