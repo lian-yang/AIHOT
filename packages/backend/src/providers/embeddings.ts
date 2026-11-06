@@ -31,7 +31,8 @@ async function embedBatch(texts: string[], subject: string): Promise<{ vectors: 
       const res = await fetch(`${base.replace(/\/$/, "")}/embeddings`, {
         method: "POST",
         headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
-        body: JSON.stringify({ model: EMBEDDING_MODEL, input: texts, ...(EMBEDDING_DIMS > 0 ? { dimensions: EMBEDDING_DIMS } : {}), encoding_format: "float" }),
+        // No encoding_format: the OpenAI default is float, and at least Voyage rejects the explicit value.
+        body: JSON.stringify({ model: EMBEDDING_MODEL, input: texts, ...(EMBEDDING_DIMS > 0 ? { dimensions: EMBEDDING_DIMS } : {}) }),
         signal: AbortSignal.timeout(60_000),
       });
       const text = await res.text();
