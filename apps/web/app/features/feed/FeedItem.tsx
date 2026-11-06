@@ -76,7 +76,7 @@ export const FeedItem = memo(function FeedItem({ item, group, filters, read = fa
               {item.title}
             </IntentLink>
           </h3>
-          {item.summary && <p className="mt-1 line-clamp-2 text-[14.5px] leading-[1.7] text-ink-3 lg:mt-2 lg:line-clamp-3 lg:text-[15px] lg:leading-[1.75]">{item.summary}</p>}
+          {item.summary && <p className="mt-1 line-clamp-2 text-[14.5px] leading-[1.7] text-ink-3 lg:mt-2 lg:line-clamp-3 lg:max-w-[46em] lg:text-[15px] lg:leading-[1.75]">{item.summary}</p>}
         </>
       )}
 
