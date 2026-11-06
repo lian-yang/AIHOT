@@ -51,7 +51,7 @@ async function stats(): Promise<WeeklyStats> {
 
   const [radar] = await sql<{ pushed: number; selected: number }[]>`
     WITH latest AS (
-      SELECT DISTINCT ON (article_id) score, selected, created_at
+      SELECT DISTINCT ON (article_id) article_id, score, selected, created_at
       FROM analyses ORDER BY article_id, id DESC
     )
     SELECT
