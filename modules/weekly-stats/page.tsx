@@ -38,7 +38,7 @@ function Panel({ title, legend, empty, children }: { title: string; legend?: str
 function Row({ left, bar, right }: { left: string; bar?: number; right: Array<string | number> }) {
   return (
     <li className="flex items-center gap-3 px-5 py-2.5 text-[13.5px] sm:gap-4">
-      <span className="w-[8.5em] shrink-0 truncate text-ink sm:w-[9em]">{left}</span>
+      <span className={`truncate text-ink ${bar === undefined ? "min-w-0 flex-1" : "w-[8.5em] shrink-0 sm:w-[9em]"}`}>{left}</span>
       {bar !== undefined && (
         <span className="min-w-0 flex-1" aria-hidden="true">
           <span className="block h-1.5 rounded-full bg-bg-sunk">
