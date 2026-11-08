@@ -430,6 +430,30 @@ async function savedHolds(): Promise<Record<string, HeldAlert>> {
   return row?.value ?? {};
 }
 
+/** A specific missing daily the owner has decided needs no further reminders. */
+export interface ClosedDailyAlert { reason: string; by: string; at: string }
+
+async function closedDailyAlerts(): Promise<Record<string, ClosedDailyAlert>> {
+  const [row] = await sql<{ value: Record<string, ClosedDailyAlert> }[]>`SELECT value FROM settings WHERE key = 'alerts.closed_dailies'`;
+  return row?.value ?? {};
+}
+
+/** Close one announced edition with a reason, without claiming it was generated or suppressing other dates. */
+export async function closeDailyAlert(date: string, reason: string, actor: string, now = Date.now()): Promise<ClosedDailyAlert> {
+  if (!isValidDate(date)) throw new Error("invalid daily date");
+  if (!reason?.trim()) throw new Error("reason is required");
+  const key = `${DAILY_PREFIX}${date}`;
+  if (!(await alertState())[key]) throw new Error(`not an open daily alert: ${key}`);
+  const before = (await closedDailyAlerts())[date] ?? null;
+  const closed: ClosedDailyAlert = { reason: reason.trim(), by: actor, at: new Date(now).toISOString() };
+  await sql.begin(async (tx) => {
+    await tx`INSERT INTO settings (key, value, updated_by) VALUES ('alerts.closed_dailies', ${tx.json({ [date]: closed } as never)}, ${actor})
+             ON CONFLICT (key) DO UPDATE SET value = settings.value || EXCLUDED.value, updated_by = EXCLUDED.updated_by, updated_at = now()`;
+    await audit(actor, "daily_alert.close", `alert:${key}`, closed.reason, before, closed, { db: tx });
+  });
+  return closed;
+}
+
 /**
  * The agent looked at an incident it was handed and judged it not a fault (10-25: a quiet Saturday morning
  * escalated as "停止收录"): the owner is not told of that incident before `until`, a day at most. Past it, or
@@ -456,6 +480,7 @@ export async function holdAlert(key: string, reason: string, until: Date, actor:
 async function dailyReportFindings(now: number, open: AlertState): Promise<Finding[]> {
   if (!collecting() || !modelsOn()) return [];
   const today = beijingDate(now);
+  const closed = await closedDailyAlerts();
   const [activity] = await sql<{ first_report: string | null; first_attempt: Date | null }[]>`
     SELECT (SELECT min(key) FROM reports WHERE kind = 'daily') AS first_report,
            (SELECT min(started_at) FROM job_runs WHERE job = 'reports.compose') AS first_attempt`;
@@ -468,7 +493,7 @@ async function dailyReportFindings(now: number, open: AlertState): Promise<Findi
   for (let date = from; date <= today; date = addDays(date, 1)) {
     if (date >= start) dates.add(date);
   }
-  const overdue = [...dates].filter(date => now >= beijingAt(date, EDITION_TIMES.daily).getTime() + 2 * 3600_000).sort();
+  const overdue = [...dates].filter(date => !closed[date] && now >= beijingAt(date, EDITION_TIMES.daily).getTime() + 2 * 3600_000).sort();
   if (!overdue.length) return [];
   const published = new Set((await sql<{ key: string }[]>`SELECT key FROM reports WHERE kind = 'daily' AND key IN ${sql(overdue)}`).map(r => r.key));
   return overdue.filter(date => !published.has(date)).map(date => ({
@@ -491,8 +516,17 @@ async function settleDailies(open: AlertState, found: Set<string>, now: number):
   const dates = Object.keys(open).filter((key) => !found.has(key)).map(dailyDate).filter((date): date is string => !!date);
   if (!dates.length) return { missing, sent };
   const published = new Set((await sql<{ key: string }[]>`SELECT key FROM reports WHERE kind = 'daily' AND key IN ${sql(dates)}`).map((r) => r.key));
+  const closed = await closedDailyAlerts();
   for (const date of dates.filter((date) => !published.has(date))) {
     const key = `${DAILY_PREFIX}${date}`;
+    if (closed[date]) {
+      if (open[key]!.sentAt) {
+        await sendAlert(`已结束跟进：${date} 的日报未生成`, [`该期日报仍未生成；${closed[date].reason}。不再提醒此日期。`]);
+        sent.push(`${key}:closed`);
+      }
+      delete open[key];
+      continue;
+    }
     if (date >= dailyScanFrom(now)) {
       missing.add(key);
       continue;

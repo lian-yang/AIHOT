@@ -4,7 +4,7 @@ import { after, before, beforeEach, test } from "node:test";
 import { beijingAt } from "@aihot/contracts/time";
 import { closeDb, sql } from "@aihot/backend/db";
 import { getBoss, stopBoss } from "@aihot/backend/jobs/queue";
-import { checkAlerts, collectFindings } from "@aihot/backend/operations/alerts";
+import { checkAlerts, closeDailyAlert, collectFindings } from "@aihot/backend/operations/alerts";
 
 const at = (date: string, time = "10:00") => beijingAt(date, time).getTime();
 const key = (date: string) => `report.daily:${date}`;
@@ -17,7 +17,7 @@ beforeEach(async () => {
   Object.assign(process.env, { COLLECT_ENABLED: "true", MODEL_CALLS_ENABLED: "true", FEISHU_INTERNAL_ENABLED: "false" });
   await sql`DELETE FROM reports`;
   await sql`DELETE FROM job_runs WHERE job='reports.compose'`;
-  await sql`DELETE FROM settings WHERE key IN ('alerts.state','heartbeat.worker')`;
+  await sql`DELETE FROM settings WHERE key IN ('alerts.state','alerts.closed_dailies','heartbeat.worker')`;
 });
 after(async () => { await stopBoss(); await closeDb(); });
 
@@ -74,4 +74,20 @@ test("an edition still missing past the scan window is closed once instead of re
   assert.ok(!result.open.includes(key("2026-10-01")));
   result = await checkAlerts(at("2026-10-08", "12:00"));
   assert.ok(!result.sent.some(k => k.startsWith(key("2026-10-01"))));
+});
+
+test("closing one missing edition with a reason stops only its reminders without claiming it was generated", async () => {
+  await checkAlerts(at("2026-10-06"));
+  await checkAlerts(at("2026-10-07"));
+  await assert.rejects(closeDailyAlert("2026-10-06", " ", "owner"), /reason is required/);
+  await assert.rejects(closeDailyAlert("2026-10-05", "not needed", "owner"), /not an open daily alert/);
+  await closeDailyAlert("2026-10-06", "该期在系统上线前，没有可编报的数据", "owner", at("2026-10-07", "10:05"));
+  const result = await checkAlerts(at("2026-10-07", "10:10"));
+  assert.deepEqual(daily(result.sent), [`${key("2026-10-06")}:closed`]);
+  assert.deepEqual(daily(result.open), [key("2026-10-07")]);
+  assert.deepEqual(daily((await checkAlerts(at("2026-10-07", "12:00"))).sent), [key("2026-10-07")]);
+  assert.ok(!daily((await collectFindings(at("2026-10-08"))).map(f => f.key)).includes(key("2026-10-06")));
+  assert.equal((await sql`SELECT 1 FROM reports WHERE kind='daily' AND key='2026-10-06'`).length, 0);
+  const [record] = await sql<{ reason: string }[]>`SELECT reason FROM audit_log WHERE action='daily_alert.close' AND subject=${`alert:${key("2026-10-06")}`} ORDER BY created_at DESC LIMIT 1`;
+  assert.match(record!.reason, /系统上线前/);
 });
