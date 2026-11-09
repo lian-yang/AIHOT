@@ -14,7 +14,7 @@
       "tier": "T1",
       "owner_entity_id": "google",
       "participation_mode": "editorial",
-      "interval_minutes": 60,
+      "interval_minutes": 90,
       "tags": [
         "官方",
         "SEO"
@@ -183,7 +183,7 @@
       "tier": "T1_5",
       "owner_entity_id": "product-hunt",
       "participation_mode": "editorial",
-      "interval_minutes": 60,
+      "interval_minutes": 90,
       "tags": [
         "官方",
         "榜单"
@@ -224,7 +224,7 @@
       "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
-      "interval_minutes": 60,
+      "interval_minutes": 120,
       "tags": [
         "社区",
         "开发者"
@@ -245,7 +245,7 @@
       "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
-      "interval_minutes": 60,
+      "interval_minutes": 120,
       "tags": [
         "媒体"
       ],
@@ -307,7 +307,7 @@
       "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
-      "interval_minutes": 60,
+      "interval_minutes": 120,
       "tags": [
         "榜单",
         "新品"
