@@ -89,6 +89,8 @@
       "id": "rss-vercel",
       "name": "Vercel Blog",
       "kind": "rss",
+      "enabled": false,
+      "$comment": "2026-11-09 暂停：atom 只有 updated 无发布时间（详情页日期在转义 JSON 里取不到），2135 条全部按历史处理；且 blog+changelog 混 feed 噪声大。待官方提供带 published 的 feed 再启用。",
       "config": {
         "feedUrl": "https://vercel.com/atom",
         "_aihot": {
@@ -202,7 +204,7 @@
       "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
-      "interval_minutes": 30,
+      "interval_minutes": 90,
       "tags": [
         "社区"
       ],
