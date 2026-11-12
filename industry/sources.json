@@ -230,7 +230,9 @@
         "开发者"
       ],
       "site_fulltext": false,
-      "syndicate_fulltext": false
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "$comment": "2026-11-10 停用：7 天 5133 篇/40 精选（128 篇每条），GLM 消耗占全站六成；dev 教程与出海口径偏离。COMMUNITY_FEEDS 已同步移除。"
     },
     {
       "id": "rss-techcrunch-startups",
@@ -439,7 +441,9 @@
         "中文"
       ],
       "site_fulltext": false,
-      "syndicate_fulltext": false
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "$comment": "2026-11-10 停用：7 天 1253 篇/1 精选，性价比最差；中文闲聊为主。"
     },
     {
       "id": "rss-simon-willison",

@@ -240,7 +240,7 @@ export const SOURCE_DEFAULTS = {
  * dev 是 dev.to 的文章流，hn 是 Hacker News 的帖子流。
  */
 export const COMMUNITY_FEEDS: { dev: string[]; hn: string[] } = {
-  dev: ["rss-devto"],
+  dev: [],
   hn: ["rss-hn-frontpage"],
 };
 
