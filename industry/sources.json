@@ -194,12 +194,18 @@
     {
       "id": "rss-hn-frontpage",
       "name": "Hacker News",
-      "kind": "rss",
+      "kind": "json_list",
       "config": {
-        "feedUrl": "https://hnrss.org/frontpage",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
+        "url": "https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=30",
+        "mode": "json_api",
+        "itemsPath": "hits",
+        "titlePaths": [
+          "title"
+        ],
+        "urlTemplate": "{raw:url}",
+        "urlTemplateFallback": "https://news.ycombinator.com/item?id={objectID}",
+        "publishedAtPath": "created_at",
+        "externalIdPath": "objectID"
       },
       "tier": "T2",
       "owner_entity_id": null,
@@ -209,7 +215,8 @@
         "社区"
       ],
       "site_fulltext": false,
-      "syndicate_fulltext": false
+      "syndicate_fulltext": false,
+      "$comment": "2026-11-13 由 hnrss.org/frontpage(RSS) 换为 hn.algolia.com front_page API：hnrss 的 description 带 Points/Comments 计数，分数一涨就记一次修订（7 天 271 次，单帖最多 32 次）；Algolia 只取 title/url/created_at，内容稳定不再产生修订。id 不变，文章按 URL 身份衔接。"
     },
     {
       "id": "rss-devto",
